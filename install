@@ -1,0 +1,29 @@
+#!/bin/ksh
+
+echo "This will give 711 permission to your home directory, are you sure?(Y/N)"
+read resp
+if [ $resp == Y ] || [ $resp == y ]; then
+  echo "please wait, compiling"
+  g++ -Wall -std=c++0x -o ~/submit Command.cpp Submitter.cpp SubVals.cpp Vals.cpp Date.cpp Line.cpp User.cpp main.cpp
+  chmod 711 ~/.
+  chmod 711 ~/submit
+  echo "Permissions set"
+  if [ -d ~/submitter_files ]; then
+    echo "submitter_files already exist and will be used"
+  else
+    mkdir ~/submitter_files
+  fi
+  chmod 711 ~/submitter_files
+  cp template.cfg ~/submitter_files/.
+  if [ -f ~/submitter_files/accommodations.cfg ]; then
+    echo "accommodations.cfg already exist; the new one will be copied to"
+    echo "  accommodationsTemplate.cfg"
+    cp accommodations.cfg ~/submitter_files/accommodationsTemplate.cfg
+  else
+    cp accommodations.cfg ~/submitter_files/.
+  fi
+  echo "installation complete"
+else
+  echo "aborted"
+fi
+

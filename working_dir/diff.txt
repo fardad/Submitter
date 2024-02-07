@@ -1,0 +1,14 @@
+In line number 5 of your output:
+The output should be:
+Enter the day of the month:4
+                           ^
+But your output is: 
+Enter the day of the month:       4
+                           ^
+
+Unmatched character details:
+The character in column 28 is supposed to be:
+  [4] ASCII code(52)
+but you printed
+  [Space] ASCII code(32)
+

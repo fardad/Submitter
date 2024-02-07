@@ -1,0 +1,10 @@
+Script started on Mon 14 Jan 2019 09:30:30 AM EST
+This is a sample submission test!
+Every character matters - even spaces and newlines!
+
+Enter the day of the month:       4
+
+Today is day 4 of the month!
+
+
+Script done on Mon 14 Jan 2019 09:30:34 AM EST

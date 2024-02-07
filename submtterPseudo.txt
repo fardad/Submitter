@@ -1,0 +1,60 @@
+set submission values from cfg files
+
+display assessment name submission message.
+if requiredFilesForSubmissionExist then
+   if copyTesterFromProfessor then
+      #copy the tester files
+      if not successful, then
+         error
+         EXIT
+      endif
+   endif
+   if compileNeeded then
+      #compile the code
+      #save result in err.txt
+      if compile OK then
+         if executionNeeded then
+            if InstructionNeeded then
+               if InstruciotnAvilabe then
+                 #display insturcion
+               else
+                 errro insturctionMissing
+                 EXIT
+               endif instructionAvailable
+            endif instructionNeeded
+            if Script then
+               #display Script Instruction
+               #Start Script and capture output
+            else
+               #execute and capture output
+            endif Script
+            if matchingOutputNeeded then
+               #compare the ouput
+               if notMatched then
+                  error show difference
+                  EXIT
+               endif notMatched
+            end matchingOuput
+         endif Execution Needed
+      else
+        error compile error
+        EXIT
+      endif compile OK
+   endif compileNeeded
+   if submissionFilesExist then
+      if compileWasNeeded then
+        add err.txt to email
+        if executionWasNeeded then
+          add output capture to email
+        endif executionWasNeeded
+      endif compileWasNeeded
+      #Send Email to prof
+      #Message success
+   else
+      error files missing
+   endif submissionFilesExist
+else
+   error missing files
+endif requiredFilesForSubmssionExist
+EXIT
+

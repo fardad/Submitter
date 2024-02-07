@@ -1,0 +1,7 @@
+-- some values to test!
+t1=~fardad.soleimanloo/this/that/and/other
+t2 =~fardad.soleimanloo/this
+t33  =   ~fardad.soleimanloo/this/that    
+t444=~fardad.soleimanloo/this/that/and
+-- Adding one last one
+t5555=~fardad.soleimanloo=   this=  =  /that/and= /other=/one

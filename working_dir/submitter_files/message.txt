@@ -1,0 +1,15 @@
+The in-lab section is to be completed during your assigned lab section.
+It is to be completed and submitted by the end of the workshop period.
+If you attend the lab period and cannot complete the in-lab portion of 
+the workshop during that period, ask your instructor for permission to 
+complete the in-lab portion after the period.  
+If you do not attend the workshop, you can submit the in-lab section 
+along with your at-home section (see penalties below).  The at-home 
+portion of the lab is due on the day that is four days after your 
+scheduled in-lab workshop (23:59:59) (even if that day is a holiday).
+All your work (all the files you create or modify) must contain your 
+name, Seneca email and student number.
+
+You are responsible to back up your work regularly.
+
+Add your names on top of all assignments.
