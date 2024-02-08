@@ -6,39 +6,7 @@
 #include "Command.h"
 #include "Date.h"
 #include "User.h"
-// define statements
-
-//  version
-#ifdef SUBMITTER_VERSION
-# undef SUBMITTER_VERSION
-#endif
-#define SUBMITTER_VERSION "0.99.9.6"
-#ifdef SUBMITTER_DATE
-# undef SUBMITTER_DATE
-#endif
-#define SUBMITTER_DATE "2024-02-07"
-//    program config file
-#ifdef SUB_CFG_FILE
-# undef SUB_CFG_FILE
-#endif
-#define SUB_CFG_FILE "submitter.cfg"
-
-//    accommodation file
-#ifdef SUB_ACC_FILE
-# undef SUB_ACC_FILE
-#endif
-#define SUB_ACC_FILE "accommodations.cfg"
-
-//    program default directory for assignment configuration files
-#ifdef SUB_DEF_DIR
-# undef SUB_DEF_DIR
-#endif
-#define SUB_DEF_DIR "submitter_files"
-
-#ifdef SUB_ARCHIVE_DIR
-# undef SUB_ARCHIVE_DIR
-#endif
-#define SUB_ARCHIVE_DIR "submitter"
+#include "subValues.h"
 
 
 #define isSpace(ch) ((ch) < 33 || (ch) > 126)
