@@ -176,22 +176,24 @@ namespace seneca {
       bool ret = true;
       unsigned short int nums[] = { 1,0,1,0,1,0 };
       char* str = reinterpret_cast<char*>(nums);
-      Command::dec(str, SUB_ARCHIVE_DIR, 54);
-      string dname;
-      if (m_asVals.exist("archive_files")) {
-         ret = m_asVals["archive_files"].size() > 0;
-         int i;
-         for (i = 0; ret && i < m_asVals["archive_files"].size(); i++) {
-            Command ch777("chmod 777 ");
-            Command cmd("cp ");
-            dname = name();
-            std::replace(dname.begin(), dname.end(), ' ', '+');
-            cmd = cmd + m_asVals["archive_files"][i] + " " + str + "/" + std::to_string(Date().semester()) + "_" + "oop244" + "_" + dname + "_" + m_asVals["userid"] + "_" + "`whoami`" + "_" + m_asVals["archive_files"][i];
-            cmd += " 2>/dev/null";
+      if (nums[1]) { // if archive dir is set
+         Command::dec(str, SUB_ARCHIVE_DIR, 54);
+         string dname;
+         if (m_asVals.exist("archive_files")) {
+            ret = m_asVals["archive_files"].size() > 0;
+            int i;
+            for (i = 0; ret && i < m_asVals["archive_files"].size(); i++) {
+               Command ch777("chmod 777 ");
+               Command cmd("cp ");
+               dname = name();
+               std::replace(dname.begin(), dname.end(), ' ', '+');
+               cmd = cmd + m_asVals["archive_files"][i] + " " + str + "/" + std::to_string(Date().semester()) + "_" + "oop244" + "_" + dname + "_" + m_asVals["userid"] + "_" + "`whoami`" + "_" + m_asVals["archive_files"][i];
+               cmd += " 2>/dev/null";
 
-            ch777 = ch777 + str + "/" + std::to_string(Date().semester()) + "_" + "oop244" + "_" + dname + "_" + m_asVals["userid"] + "_" + "`whoami`" + "_" + m_asVals["archive_files"][i];
-            
-            ret = (cmd.run() == 0) && (ch777.run() == 0);
+               ch777 = ch777 + str + "/" + std::to_string(Date().semester()) + "_" + "oop244" + "_" + dname + "_" + m_asVals["userid"] + "_" + "`whoami`" + "_" + m_asVals["archive_files"][i];
+
+               ret = (cmd.run() == 0) && (ch777.run() == 0);
+            }
          }
       }
       return ret;
