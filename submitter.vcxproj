@@ -94,7 +94,7 @@
     <ClCompile Include="Date.cpp" />
     <ClCompile Include="Line.cpp" />
     <ClCompile Include="Log.cpp" />
-    <ClCompile Include="logTester.cpp" />
+    <ClCompile Include="main.cpp" />
     <ClCompile Include="Submitter.cpp" />
     <ClCompile Include="SubVals.cpp" />
     <ClCompile Include="User.cpp" />
