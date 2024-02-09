@@ -16,13 +16,13 @@ namespace seneca {
       bool operator!=(const char* delivarable)const;
       operator const char* ()const;
       operator char* ();
-      friend class LogFile;
       std::ofstream& write(std::ofstream& file);
       std::ifstream& read(std::ifstream& file);
       size_t submit();
       size_t operator++();
       std::string tostring()const;
       operator std::string()const;
+      friend class LogFile;
    };
 
    class LogFile {
@@ -42,7 +42,6 @@ namespace seneca {
       Log& operator[](std::string delivarable);
       Log& log(size_t index);
       LogFile& save();
-
    };
 }
 #endif // !SENECA_LOG_H
