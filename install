@@ -4,7 +4,7 @@ echo "This will give 711 permission to your home directory, are you sure?(Y/N)"
 read resp
 if [ $resp == Y ] || [ $resp == y ]; then
   echo "please wait, compiling"
-  g++ -Wall -std=c++0x -o ~/submit Command.cpp Submitter.cpp SubVals.cpp Vals.cpp Date.cpp Line.cpp User.cpp main.cpp
+  g++ -Wall -std=c++0x -o ~/submit Command.cpp Submitter.cpp SubVals.cpp Vals.cpp Date.cpp Line.cpp User.cpp Log.cpp main.cpp
   chmod 711 ~/.
   chmod 711 ~/submit
   echo "Permissions set"
