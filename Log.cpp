@@ -94,11 +94,14 @@ namespace seneca {
    }
 
    LogFile& LogFile::save() {
-      ofstream file(m_filename);
-      file.write(reinterpret_cast<const char*>(&m_semster), sizeof(m_semster));
-      for (size_t i = 0; i < m_noOfLogs; i++) {
-         Command::enc(log(i), SUB_LOG_DIR, sizeof(Log));
-         file.write(log(i), sizeof(Log));
+      if (!m_saved) {
+         m_saved = true;
+         ofstream file(m_filename);
+         file.write(reinterpret_cast<const char*>(&m_semster), sizeof(m_semster));
+         for (size_t i = 0; i < m_noOfLogs; i++) {
+            Command::enc(log(i), SUB_LOG_DIR, sizeof(Log));
+            file.write(log(i), sizeof(Log));
+         }
       }
       return *this;
    }

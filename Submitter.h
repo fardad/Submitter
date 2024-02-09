@@ -7,7 +7,7 @@
 #include "Date.h"
 #include "User.h"
 #include "subValues.h"
-
+#include "Log.h"
 
 #define isSpace(ch) ((ch) < 33 || (ch) > 126)
 
@@ -56,7 +56,7 @@ namespace seneca{
     int checkOutput();
     bool skipLine(int lineNo);
     const char* name();
-    bool submit(std::string& toEmail, bool Confirmation = false); // if confirmation is ture then work will be submitted to student
+    bool submit(LogFile& log,std::string& toEmail, bool Confirmation = false); // if confirmation is ture then work will be submitted to student
     bool removeBS(const char* filename);
     static const char* getFilename(const char* path);
     void printCommandSyntaxHelp()const;

@@ -32,8 +32,8 @@ namespace seneca {
       size_t m_noOfLogs{};
       Log& operator++(); // add log
       LogFile& load();
-      LogFile& save();
       void clear();
+      bool m_saved{};
    public:
       LogFile(const char* filename);
       ~LogFile();
@@ -41,6 +41,7 @@ namespace seneca {
       Log& operator[](const char* delivarable);
       Log& operator[](std::string delivarable);
       Log& log(size_t index);
+      LogFile& save();
 
    };
 }

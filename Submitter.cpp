@@ -15,6 +15,7 @@
 #include "Date.h"
 #include "Line.h"
 #include "colors.h"
+#include "log.h"
 
 
 using namespace std;
@@ -660,6 +661,7 @@ namespace seneca {
    */
 
    int Submitter::run() {
+      LogFile log(SUB_LOG_NAME);
       int bad = 0;
       int i = 0;
       clrscr();
@@ -761,7 +763,7 @@ namespace seneca {
                // if Assignment name is set in the assignment spcs files
 
                if(m_asVals.exist("assessment_name")) {
-
+                  ++log[m_configFileName];
                   if(m_feedbackOnly) {
                      cout << col_yellow;
                      cout << "Dry running";
@@ -910,7 +912,8 @@ namespace seneca {
                         }
                      }
                      if(!bad) {
-                        if(submit(m_asVals["prof_email"][0])) {
+                        log[m_configFileName].submit();
+                        if(submit(log, m_asVals["prof_email"][0])) {
                            cout << col_green << "Thank you!, Your work is now submitted." << endl << col_end;
                         } else {
                            bad = error(19, "Email failed.");
@@ -918,7 +921,7 @@ namespace seneca {
                      }
                      if(!bad) {
                         if(!m_asVals.exist("CC_student") || m_asVals["CC_student"][0] == "yes") {
-                           if(submit(m_asVals["prof_email"][0], true)) {
+                           if(submit(log, m_asVals["prof_email"][0], true)) {
                               cout << col_green << "Confirmation of the submission was sent to your \"myseneca.ca\" email." << col_end << endl;
                            } else {
                               bad = error(19, "Confirmation email failed.");
@@ -930,7 +933,7 @@ namespace seneca {
                            cout << endl << col_yellow << "Would you like to submit a copy of this demonstration of " << col_cyan << name() << col_yellow << " to the TA for feedback? (Y)es/(N)o: ";
                            if(yes()) {
                               for(i = 1; i < signed(m_asVals["prof_email"].size()); i++) {
-                                 if(submit(m_asVals["prof_email"][i])) {
+                                 if(submit(log, m_asVals["prof_email"][i])) {
                                     cout << col_green << "CC no " << i << " was sent to the TA for feedback." << col_end << endl;
                                  } else {
                                     bad = error(19, "Email CC failed.");
@@ -957,7 +960,7 @@ namespace seneca {
       return bad;
    }
 
-   bool Submitter::submit(string& toEmail, bool Confirmation) {
+   bool Submitter::submit(LogFile& log, string& toEmail, bool Confirmation) {
       Command email("echo \"");
       bool include_output_in_email = false;
       bool cc_files_to_students = !(m_asVals.exist("CC_student_files") && m_asVals["CC_student_files"][0] == "no");
@@ -978,6 +981,11 @@ namespace seneca {
       if(Confirmation) email += " confirmation";
       email += " by `whoami`. Executed from ";
       email += m_home;
+      if (!Confirmation) {
+         email += "\\n";
+         email += log[m_configFileName].tostring();
+         log.save();
+      }
       email += "\" | mail -s \"";
       email += m_asVals["subject_code"][0] + " - ";
       email += name();
