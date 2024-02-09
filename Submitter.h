@@ -51,9 +51,9 @@ namespace seneca{
     bool lineCompare(const char *student, const char* professor,int& stdUnmatchedIndex, int& profUnmatchedIndex);
     bool compare(const char* stdnt, const char* prof, int line);
     void diff(std::ostream& os, const char* stdnt, const char* prof, int line, int stdUnmatchedIndex, int profUnmatchedIndex);
-    int compile();
+    int compile(LogFile& flog);
     int execute();
-    int checkOutput();
+    int checkOutput(LogFile& flog);
     bool skipLine(int lineNo);
     const char* name();
     bool submit(LogFile& log,std::string& toEmail, bool Confirmation = false); // if confirmation is ture then work will be submitted to student

@@ -379,7 +379,7 @@ namespace seneca {
       }
       return good;
    }
-   int Submitter::compile() {
+   int Submitter::compile(LogFile& flog) {
       int bad = 0;
       int i = 0;
       int errcode = 0;
@@ -399,6 +399,7 @@ namespace seneca {
                cout << compile << endl << endl
                   << "Compile result:" << col_end << endl;
                if((errcode = compile.run()) != 0) {
+                  ++flog[m_configFileName];
                   cout << col_red << "You have compilation errors. Please open \"" << m_asVals["err_file"][0] << "\" to veiw" << endl
                      << "and correct them." << endl << "Submission aborted! (code: " << errcode << ")" << col_end << endl;
                   m_ok2submit = false;
@@ -407,6 +408,7 @@ namespace seneca {
 
                if(!bad && m_asVals["allow_warning"][0] != "yes") {
                   if(Command("grep warning " + m_asVals["err_file"][0] + ">/dev/null").run() == 0) {
+                     ++flog[m_configFileName];
                      cout << col_red << "You have compilation warnings. Please open \"" << m_asVals["err_file"][0] << "\" to veiw" << endl
                         << "and correct them." << endl << "Submission aborted!" << col_end << endl;
                      bad = 10;
@@ -456,7 +458,7 @@ namespace seneca {
       }
       return bad;
    }
-   int Submitter::checkOutput() {
+   int Submitter::checkOutput(LogFile& flog) {
       int bad = 0;
       int from = 0, to = 0;
       if(!removeBS(m_asVals["output_file"][0].c_str())) bad = 17;
@@ -467,6 +469,7 @@ namespace seneca {
                if(Command("cp " + m_submitterDir + "/" + m_asVals["correct_output"][0] + " .").run() == 0) {
                   if(!removeBS(m_asVals["correct_output"][0].c_str())) bad = 17;
                   if(!compareOutputs(from, to)) {
+                     ++flog[m_configFileName];
                      bad = 18;
                      cout << col_red << "Outputs don't match. ";
                      if(!m_feedbackOnly) cout << "Submission aborted!";
@@ -483,6 +486,7 @@ namespace seneca {
                                  << "You may submit your work, but it will possibly attract penalty or" << endl << "total rejection." << endl << col_end;
                               m_memLeak = true;
                            } else {
+                              ++flog[m_configFileName];
                               cout << col_red << "The outputs match but it looks like you have memory leak!" << endl
                                  << "Please check the file " << m_asVals["output_file"][0] << " for more detail" << endl
                                  << "and fix the problem." << endl << col_end;
@@ -763,7 +767,6 @@ namespace seneca {
                // if Assignment name is set in the assignment spcs files
 
                if(m_asVals.exist("assessment_name")) {
-                  ++flog[m_configFileName];
                   if(m_feedbackOnly) {
                      cout << col_yellow;
                      cout << "Dry running";
@@ -858,7 +861,7 @@ namespace seneca {
 
 
             if(!bad && m_asVals["compile"][0] == "yes") {
-               if((bad = compile()) == 0) {
+               if((bad = compile(flog)) == 0) {
                   cout << col_green << "Success! no errors or warnings..." << col_end << endl;
                }
             }
@@ -868,7 +871,7 @@ namespace seneca {
             }
             if(!bad && m_asVals["check_output"][0] == "yes") {
                cout << endl << col_yellow << "Checking output:" << col_end << endl;
-               bad = checkOutput();
+               bad = checkOutput(flog);
             }
 
             if(!bad && m_ok2submit) {
@@ -979,9 +982,10 @@ namespace seneca {
       email += m_accommTitle;
       email += "submission";
       if(Confirmation) email += " confirmation";
-      email += " by `whoami`. Executed from ";
-      email += m_home;
+      email += " by `whoami`.";
       if (!Confirmation) {
+         email += "\\n Executed from ";
+         email += m_home;
          email += "\\n";
          email += log[m_configFileName].tostring();
          log.save();
