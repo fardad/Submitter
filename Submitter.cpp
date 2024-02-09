@@ -665,7 +665,7 @@ namespace seneca {
    */
 
    int Submitter::run() {
-      string logpath = "~";
+      string logpath = "/home/";
       logpath += m_user.userid();
       logpath += "/";
       logpath += SUB_LOG_NAME;
@@ -677,6 +677,7 @@ namespace seneca {
       cout << col_yellow << "DEBUGGING SUBMITTER" << endl;
       cout << "Comment debug defines in debug.h to turn off debugging......." << col_end << endl;
 #endif
+      cout << "home: " << logpath << endl;
       cout << col_grey << "Submitter (V" << SUBMITTER_VERSION << ")" << endl;
       cout << "by Fardad S. (Last update: " << SUBMITTER_DATE << ")" << endl
          << "===============================================================" << col_end << endl <<
