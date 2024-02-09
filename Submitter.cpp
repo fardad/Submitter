@@ -15,7 +15,7 @@
 #include "Date.h"
 #include "Line.h"
 #include "colors.h"
-#include "log.h"
+#include "Log.h"
 
 
 using namespace std;
