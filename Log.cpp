@@ -76,7 +76,7 @@ namespace seneca {
       ifstream file(m_filename);
       if (file) {
          file.read(reinterpret_cast<char*>(&m_semster), sizeof(m_semster));
-         if (m_semster != Date().semester()) {
+         if (m_semster != static_cast<size_t>(Date().semester())) {
             m_semster = Date().semester();
          }
          else {
