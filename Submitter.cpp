@@ -665,7 +665,11 @@ namespace seneca {
    */
 
    int Submitter::run() {
-      LogFile flog(SUB_LOG_NAME);
+      string logpath = "~";
+      logpath += m_user.userid();
+      logpath += "/";
+      logpath += SUB_LOG_NAME;
+      LogFile flog(logpath.c_str() );
       int bad = 0;
       int i = 0;
       clrscr();

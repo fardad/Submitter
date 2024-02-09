@@ -32,6 +32,9 @@ namespace seneca {
   const string& User::ip()const {
     return m_ip;
   }
+  std::string User::userid() const{
+     return m_userid;
+  }
   void User::getIP() {
     int logins = 0;
     string token;
