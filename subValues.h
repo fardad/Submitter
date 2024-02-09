@@ -43,6 +43,6 @@
 #ifdef SUB_LOG_NAME
 #undef SUB_LOG_NAME
 #endif 
-#define SUB_LOG_NAME ".sub_log"
+#define SUB_LOG_NAME "~/.sub_log"
 #endif // !SENECA_SUBVALUES_H
 

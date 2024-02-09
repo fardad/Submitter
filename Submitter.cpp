@@ -961,7 +961,7 @@ namespace seneca {
    }
 
    bool Submitter::submit(LogFile& log, string& toEmail, bool Confirmation) {
-      Command email("echo \"");
+      Command email("echo -e \"");
       bool include_output_in_email = false;
       bool cc_files_to_students = !(m_asVals.exist("CC_student_files") && m_asVals["CC_student_files"][0] == "no");
       email += name();
