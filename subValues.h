@@ -7,11 +7,11 @@
 #ifdef SUBMITTER_VERSION
 # undef SUBMITTER_VERSION
 #endif
-#define SUBMITTER_VERSION "0.99.10.0"
+#define SUBMITTER_VERSION "0.99.11.0"
 #ifdef SUBMITTER_DATE
 # undef SUBMITTER_DATE
 #endif
-#define SUBMITTER_DATE "2024-02-07"
+#define SUBMITTER_DATE "2024-08-19"
 //    program config file
 #ifdef SUB_CFG_FILE
 # undef SUB_CFG_FILE

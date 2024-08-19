@@ -899,22 +899,25 @@ namespace seneca {
                      cout << col_yellow << "Would you like to submit this demonstration of " << col_cyan << name() << col_yellow << "? (Y)es/(N)o: " << col_end;
                   }
                   if(!m_feedbackOnly && yes()) {
-                     if(m_asVals.exist("allowed_ips")) {
-                        m_user.getIP();
-                        if(m_user.multipleLogins()) {
-                           cout << col_red << "You are logged in from multiple locations." << endl
-                              << "Please logoff from all other sessions and try again." << col_end << endl;
-                           bad = 24;
-                        } else {
-                           bad = 25; // if one of the ips match, bad will be set to zero
-                           for(i = 0; bad && i < m_asVals["allowed_ips"].size(); i++) {
-                              if(!m_user.ip().compare(0, m_asVals["allowed_ips"][i].size(), m_asVals["allowed_ips"][i])) {
-                                 bad = 0;
-                              }
+                     if (!m_late && m_accommExtension + m_accommExtMins == 0) {
+                        if (m_asVals.exist("allowed_ips")) {
+                           m_user.getIP();
+                           if (m_user.multipleLogins()) {
+                              cout << col_red << "You are logged in from multiple locations." << endl
+                                 << "Please logoff from all other sessions and try again." << col_end << endl;
+                              bad = 24;
                            }
-                           if(bad) {
-                              cout << col_red << "You can not submit from this location!" << endl
-                                 << "If this seems to be a mistake, please notify your professor." << col_end << endl;
+                           else {
+                              bad = 25; // if one of the ips match, bad will be set to zero
+                              for (i = 0; bad && i < m_asVals["allowed_ips"].size(); i++) {
+                                 if (!m_user.ip().compare(0, m_asVals["allowed_ips"][i].size(), m_asVals["allowed_ips"][i])) {
+                                    bad = 0;
+                                 }
+                              }
+                              if (bad) {
+                                 cout << col_red << "You can not submit from this location!" << endl
+                                    << "If this seems to be a mistake, please notify your professor." << col_end << endl;
+                              }
                            }
                         }
                      }
