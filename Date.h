@@ -22,6 +22,7 @@ namespace seneca{
     int m_min;
     int m_readErrorCode;
     int daysValue()const;
+    long long uniqueValue()const;
     int curYear()const;
     bool validate();
     void errCode(int);
