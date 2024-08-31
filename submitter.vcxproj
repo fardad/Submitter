@@ -82,8 +82,10 @@
     <ClInclude Include="Date.h" />
     <ClInclude Include="debug.h" />
     <ClInclude Include="Line.h" />
+    <ClInclude Include="Log.h" />
     <ClInclude Include="Submitter.h" />
     <ClInclude Include="SubVals.h" />
+    <ClInclude Include="subValues.h" />
     <ClInclude Include="User.h" />
     <ClInclude Include="Vals.h" />
   </ItemGroup>
@@ -91,6 +93,7 @@
     <ClCompile Include="Command.cpp" />
     <ClCompile Include="Date.cpp" />
     <ClCompile Include="Line.cpp" />
+    <ClCompile Include="Log.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Submitter.cpp" />
     <ClCompile Include="SubVals.cpp" />

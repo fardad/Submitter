@@ -10,7 +10,7 @@ namespace seneca{
     Command(std::string str);
     int run()const;
     static void dec(char* str, const char* key, size_t n);
-    static size_t enc(char* str, const char* key);
+    static size_t enc(char* str, const char* key, size_t n=0u);
   };
 }
 #endif

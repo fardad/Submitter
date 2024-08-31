@@ -59,6 +59,17 @@ namespace seneca{
      int m = m_mon + 12 * a - 3;
      return m_day + ((153 * m + 2) / 5) + 365 * y + y / 4 - y / 100 + y / 400 - 32045;
   }
+
+  long long Date::uniqueValue()const {
+     long long uv = 0;
+     uv += static_cast<long long>(m_year) * 366 * 24 * 60;
+     uv += static_cast<long long>(m_mon) * 31 * 24 * 60;
+     uv += static_cast<long long>(m_day) * 24 * 60;
+     uv += static_cast<long long>(m_hour) * 60;
+     uv += static_cast<long long>(m_min);
+     return uv;
+  }
+
   bool Date::validate(){
     errCode(NO_ERROR);
     if (m_year < curYear()-1 || m_year > curYear()+ 1){
@@ -119,16 +130,16 @@ namespace seneca{
     return m_readErrorCode != 0;
   }
   bool Date::operator==(const Date& D)const{
-    return daysValue() == D.daysValue();
+    return uniqueValue() == D.uniqueValue();
   }
   bool Date::operator!=(const Date& D)const{
     return !operator==(D);
   }
   bool Date::operator<(const Date& D)const{
-    return daysValue() < D.daysValue();
+    return uniqueValue() < D.uniqueValue();
   }
   bool Date::operator>(const Date& D)const{
-    return daysValue() > D.daysValue();
+    return uniqueValue() > D.uniqueValue();
   }
   bool Date::operator<=(const Date& D)const{
     return !operator>(D);

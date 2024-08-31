@@ -28,9 +28,9 @@ namespace seneca{
         str[i] = str[i] ^ key[i % m];
      }
   }
-  size_t Command::enc(char* str, const char* key) {
+  size_t Command::enc(char* str, const char* key, size_t n) {
      unsigned char data;
-     size_t n = strlen(str);
+     n = n ? n: strlen(str);
      size_t m = strlen(key);
      for (size_t i = 0; i < n; i++) {
         str[i] = str[i] ^ key[i % m];

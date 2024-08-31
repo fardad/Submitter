@@ -25,6 +25,7 @@ namespace seneca {
     bool valid()const;
     bool multipleLogins()const;
     const std::string& ip()const;
+    std::string userid()const;
     std::ostream& print(std::ostream& os)const;
   };
   std::ostream& operator<<(std::ostream& os, const User& U);

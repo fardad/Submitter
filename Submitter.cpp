@@ -15,6 +15,7 @@
 #include "Date.h"
 #include "Line.h"
 #include "colors.h"
+#include "Log.h"
 
 
 using namespace std;
@@ -380,7 +381,7 @@ namespace seneca {
       }
       return good;
    }
-   int Submitter::compile() {
+   int Submitter::compile(LogFile& flog) {
       int bad = 0;
       int i = 0;
       int errcode = 0;
@@ -400,6 +401,7 @@ namespace seneca {
                cout << compile << endl << endl
                   << "Compile result:" << col_end << endl;
                if((errcode = compile.run()) != 0) {
+                  ++flog[m_configFileName];
                   cout << col_red << "You have compilation errors. Please open \"" << m_asVals["err_file"][0] << "\" to veiw" << endl
                      << "and correct them." << endl << "Submission aborted! (code: " << errcode << ")" << col_end << endl;
                   m_ok2submit = false;
@@ -408,6 +410,7 @@ namespace seneca {
 
                if(!bad && m_asVals["allow_warning"][0] != "yes") {
                   if(Command("grep warning " + m_asVals["err_file"][0] + ">/dev/null").run() == 0) {
+                     ++flog[m_configFileName];
                      cout << col_red << "You have compilation warnings. Please open \"" << m_asVals["err_file"][0] << "\" to veiw" << endl
                         << "and correct them." << endl << "Submission aborted!" << col_end << endl;
                      bad = 10;
@@ -457,7 +460,7 @@ namespace seneca {
       }
       return bad;
    }
-   int Submitter::checkOutput() {
+   int Submitter::checkOutput(LogFile& flog) {
       int bad = 0;
       int from = 0, to = 0;
       if(!removeBS(m_asVals["output_file"][0].c_str())) bad = 17;
@@ -468,6 +471,7 @@ namespace seneca {
                if(Command("cp " + m_submitterDir + "/" + m_asVals["correct_output"][0] + " .").run() == 0) {
                   if(!removeBS(m_asVals["correct_output"][0].c_str())) bad = 17;
                   if(!compareOutputs(from, to)) {
+                     ++flog[m_configFileName];
                      bad = 18;
                      cout << col_red << "Outputs don't match. ";
                      if(!m_feedbackOnly) cout << "Submission aborted!";
@@ -484,6 +488,7 @@ namespace seneca {
                                  << "You may submit your work, but it will possibly attract penalty or" << endl << "total rejection." << endl << col_end;
                               m_memLeak = true;
                            } else {
+                              ++flog[m_configFileName];
                               cout << col_red << "The outputs match but it looks like you have memory leak!" << endl
                                  << "Please check the file " << m_asVals["output_file"][0] << " for more detail" << endl
                                  << "and fix the problem." << endl << col_end;
@@ -662,6 +667,11 @@ namespace seneca {
    */
 
    int Submitter::run() {
+      string logpath = "/home/";
+      logpath += m_user.userid();
+      logpath += "/";
+      logpath += SUB_LOG_NAME;
+      LogFile flog(logpath.c_str() );
       int bad = 0;
       int i = 0;
       clrscr();
@@ -763,7 +773,6 @@ namespace seneca {
                // if Assignment name is set in the assignment spcs files
 
                if(m_asVals.exist("assessment_name")) {
-
                   if(m_feedbackOnly) {
                      cout << col_yellow;
                      cout << "Dry running";
@@ -858,7 +867,7 @@ namespace seneca {
 
 
             if(!bad && m_asVals["compile"][0] == "yes") {
-               if((bad = compile()) == 0) {
+               if((bad = compile(flog)) == 0) {
                   cout << col_green << "Success! no errors or warnings..." << col_end << endl;
                }
             }
@@ -868,7 +877,7 @@ namespace seneca {
             }
             if(!bad && m_asVals["check_output"][0] == "yes") {
                cout << endl << col_yellow << "Checking output:" << col_end << endl;
-               bad = checkOutput();
+               bad = checkOutput(flog);
             }
 
             if(!bad && m_ok2submit) {
@@ -892,27 +901,31 @@ namespace seneca {
                      cout << col_yellow << "Would you like to submit this demonstration of " << col_cyan << name() << col_yellow << "? (Y)es/(N)o: " << col_end;
                   }
                   if(!m_feedbackOnly && yes()) {
-                     if(m_asVals.exist("allowed_ips")) {
-                        m_user.getIP();
-                        if(m_user.multipleLogins()) {
-                           cout << col_red << "You are logged in from multiple locations." << endl
-                              << "Please logoff from all other sessions and try again." << col_end << endl;
-                           bad = 24;
-                        } else {
-                           bad = 25; // if one of the ips match, bad will be set to zero
-                           for(i = 0; bad && i < m_asVals["allowed_ips"].size(); i++) {
-                              if(!m_user.ip().compare(0, m_asVals["allowed_ips"][i].size(), m_asVals["allowed_ips"][i])) {
-                                 bad = 0;
-                              }
+                     if (!m_late && m_accommExtension + m_accommExtMins == 0) {
+                        if (m_asVals.exist("allowed_ips")) {
+                           m_user.getIP();
+                           if (m_user.multipleLogins()) {
+                              cout << col_red << "You are logged in from multiple locations." << endl
+                                 << "Please logoff from all other sessions and try again." << col_end << endl;
+                              bad = 24;
                            }
-                           if(bad) {
-                              cout << col_red << "You can not submit from this location!" << endl
-                                 << "If this seems to be a mistake, please notify your professor." << col_end << endl;
+                           else {
+                              bad = 25; // if one of the ips match, bad will be set to zero
+                              for (i = 0; bad && i < m_asVals["allowed_ips"].size(); i++) {
+                                 if (!m_user.ip().compare(0, m_asVals["allowed_ips"][i].size(), m_asVals["allowed_ips"][i])) {
+                                    bad = 0;
+                                 }
+                              }
+                              if (bad) {
+                                 cout << col_red << "You can not submit from this location!" << endl
+                                    << "If this seems to be a mistake, please notify your professor." << col_end << endl;
+                              }
                            }
                         }
                      }
                      if(!bad) {
-                        if(submit(m_asVals["prof_email"][0])) {
+                        flog[m_configFileName].submit();
+                        if(submit(flog, m_asVals["prof_email"][0])) {
                            cout << col_green << "Thank you!, Your work is now submitted." << endl << col_end;
                         } else {
                            bad = error(19, "Email failed.");
@@ -920,7 +933,7 @@ namespace seneca {
                      }
                      if(!bad) {
                         if(!m_asVals.exist("CC_student") || m_asVals["CC_student"][0] == "yes") {
-                           if(submit(m_asVals["prof_email"][0], true)) {
+                           if(submit(flog, m_asVals["prof_email"][0], true)) {
                               cout << col_green << "Confirmation of the submission was sent to your \"myseneca.ca\" email." << col_end << endl;
                            } else {
                               bad = error(19, "Confirmation email failed.");
@@ -932,7 +945,7 @@ namespace seneca {
                            cout << endl << col_yellow << "Would you like to submit a copy of this demonstration of " << col_cyan << name() << col_yellow << " to the TA for feedback? (Y)es/(N)o: ";
                            if(yes()) {
                               for(i = 1; i < signed(m_asVals["prof_email"].size()); i++) {
-                                 if(submit(m_asVals["prof_email"][i])) {
+                                 if(submit(flog, m_asVals["prof_email"][i])) {
                                     cout << col_green << "CC no " << i << " was sent to the TA for feedback." << col_end << endl;
                                  } else {
                                     bad = error(19, "Email CC failed.");
@@ -959,8 +972,8 @@ namespace seneca {
       return bad;
    }
 
-   bool Submitter::submit(string& toEmail, bool Confirmation) {
-      Command email("echo \"");
+   bool Submitter::submit(LogFile& log, string& toEmail, bool Confirmation) {
+      Command email("echo -e \"");
       bool include_output_in_email = false;
       bool cc_files_to_students = !(m_asVals.exist("CC_student_files") && m_asVals["CC_student_files"][0] == "no");
       email += name();
@@ -978,8 +991,14 @@ namespace seneca {
       email += m_accommTitle;
       email += "submission";
       if(Confirmation) email += " confirmation";
-      email += " by `whoami`. Executed from ";
-      email += m_home;
+      email += " by `whoami`.";
+      if (!Confirmation) {
+         email += "\\n Executed from ";
+         email += m_home;
+         email += "\\n";
+         email += log[m_configFileName].tostring();
+         log.save();
+      }
       email += "\" | mail -s \"";
       email += m_asVals["subject_code"][0] + " - ";
       email += name();
