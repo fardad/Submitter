@@ -10,7 +10,10 @@
 using namespace std;
 namespace seneca {
    Log& Log::operator=(const char* delivarable) {
-      delivarable&& strcpy(m_delivarable, delivarable);
+      if (delivarable) {
+         strncpy(m_delivarable, delivarable, 255);
+         m_delivarable[255] = 0;
+      }
       return *this;
    }
    bool Log::operator==(const char* delivarable) const
@@ -74,20 +77,27 @@ namespace seneca {
    LogFile& LogFile::load() {
       clear();
       ifstream file(m_filename);
+      m_badfile = false;
       if (file) {
          file.read(reinterpret_cast<char*>(&m_semster), sizeof(m_semster));
-         if (m_semster != static_cast<size_t>(Date().semester())) {
-            m_semster = Date().semester();
+         if (file) {
+            if (m_semster != static_cast<size_t>(Date().semester())) {
+               m_semster = Date().semester();
+            }
+            else {
+               file.seekg(streamoff(0), ios::end);
+               size_t size = static_cast<size_t>(file.tellg()) - sizeof(m_semster);
+               size = size / sizeof(Log);
+               file.seekg(sizeof(m_semster));
+               for (size_t i = 0; i < size; i++) {
+                  file.read(operator++(), sizeof(Log));
+                  Command::dec(log(i), SUB_LOG_DIR, sizeof(Log));
+               }
+            }
          }
          else {
-            file.seekg(streamoff(0), ios::end);
-            size_t size = static_cast<size_t>(file.tellg()) - sizeof(m_semster);
-            size = size / sizeof(Log);
-            file.seekg(sizeof(m_semster));
-            for (size_t i = 0; i < size; i++) {
-               file.read(operator++(), sizeof(Log));
-               Command::dec(log(i), SUB_LOG_DIR, sizeof(Log));
-            }
+            m_semster = Date().semester();
+            m_badfile = true;
          }
       }
       return *this;
@@ -106,11 +116,16 @@ namespace seneca {
       return *this;
    }
 
+   bool LogFile::badFile() const{
+      return m_badfile;
+   }
+
    void LogFile::clear() {
       delete[] m_logs;
       m_logs = nullptr;
       m_noOfLogs = 0u;
       m_semster = static_cast<size_t>(Date().semester());
+      m_badfile = false;
    }
 
    LogFile::LogFile(const char* filename) :m_filename(filename),

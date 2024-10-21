@@ -671,14 +671,15 @@ namespace seneca {
       logpath += m_user.userid();
       logpath += "/";
       logpath += SUB_LOG_NAME;
-      LogFile flog(logpath.c_str() );
       int bad = 0;
       int i = 0;
       clrscr();
 #ifdef SENECA_DEBUG
       cout << col_yellow << "DEBUGGING SUBMITTER" << endl;
       cout << "Comment debug defines in debug.h to turn off debugging......." << col_end << endl;
+      logpath = SUB_LOG_NAME;
 #endif
+      LogFile flog(logpath.c_str());
       cout << col_grey << "Submitter (V" << SUBMITTER_VERSION << ")" << endl;
       cout << "by Fardad S. (Last update: " << SUBMITTER_DATE << ")" << endl
          << "===============================================================" << col_end << endl <<
@@ -745,7 +746,7 @@ namespace seneca {
                      bad = 22;
                   } else if(m_now > m_rejectionDate) {
                      cout << col_red << "*** Submission Rejected! ***" << col_end << endl
-                        << "The deadline for this " << m_accommTitle << "submission has passed(Due: " << m_rejectionDate << ")." << endl
+                        << "The deadline for this " << m_accommTitle << "submission of "<< m_configFileName <<" has passed(Due: " << m_rejectionDate << ")." << endl
                         << "If you believe this to be an error, please discuss with your professor." << endl;
                      m_ok2submit = false;
                   }
@@ -997,6 +998,10 @@ namespace seneca {
          email += m_home;
          email += "\\n";
          email += log[m_configFileName].tostring();
+         if (log.badFile()) {
+            email += "\\n";
+            email += "TEMPERED LOG FILE DETECTED!";
+         }
          log.save();
       }
       email += "\" | mail -s \"";

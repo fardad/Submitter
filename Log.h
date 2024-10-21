@@ -30,6 +30,7 @@ namespace seneca {
       size_t m_semster{};
       Log* m_logs{};
       size_t m_noOfLogs{};
+      bool m_badfile{};
       Log& operator++(); // add log
       LogFile& load();
       void clear();
@@ -42,6 +43,7 @@ namespace seneca {
       Log& operator[](std::string delivarable);
       Log& log(size_t index);
       LogFile& save();
+      bool badFile()const;
    };
 }
 #endif // !SENECA_LOG_H
