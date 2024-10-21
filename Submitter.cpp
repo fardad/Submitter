@@ -996,7 +996,10 @@ namespace seneca {
          email += m_home;
          email += "\\n";
          email += log[m_configFileName].tostring();
-         if (log.badFile()) email += "\\n bad log file!";
+         if (log.badFile()) {
+            email += "\\n";
+            email += "TEMPERED LOG FILE DETECTED!";
+         }
          log.save();
       }
       email += "\" | mail -s \"";
