@@ -42,41 +42,9 @@ $ ~john.doe/submit 244/w2<ENTER>
 
 To give extra time to students with accommodation or occasionally give extensions to individual students for any reason, you can add exceptions to an accommodation configuration file for individual students and the submitter application will automatically apply the extensions to those individuals.
 
-### Installation Instructions (at Seneca)
-First, the professor needs to install the program; this is how it is done:
+### Installation Instructions (at seneca)
 
-Login to your account on Matrix 
-> if your account is not activated, email `helpdesk(at)senecacollege.ca` requesting to activate your account.
-
-In your home directory, enter the following commands:
-
-```shell
-$ git clone https://github.com/fardad/Submitter.git
-$ cd Submitter
-$ chmod 700 install
-$ install
-```
-and done!
-
-These commands do the following:
-
-- Create a directory called “Submitter” and download the installation script and all of the
-source files from GitHub.
-- Change the current directory to the “Submitter” directory
-- Give execute permission to the installation script
-- install the submitter
-
-During the installation process, the following will happen:
-
-- You will be prompted with a warning that access to your root directory will be modified to 711. 
-> Make sure that the sub-directories of your home directory have the proper permissions so that they are not exposed by this modification 
-
-- The install script will then compile the source code and create a sub-directory called submitter_files in your home directory.
-- The submitter executable (the submit command) will be copied to the root of the account with proper permissions. 
-- The submitter_files directory will include the submission configuration template file (`template.cfg`).  This directory is where all the files for the submitter program are stored.
-- If you are reinstalling the submitter, you might get errors for already existing directories and files. You can ignore these messages.
-
-once the installation script finishes executing, the Submitter application is ready to configure for a particular assignment.
+Contact fardad.soleimanloo at senecapolytechnic.ca
 
 ### Configuration Instructions
 
