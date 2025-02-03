@@ -187,10 +187,10 @@ namespace seneca {
             Command cmd("cp ");
             dname = name();
             std::replace(dname.begin(), dname.end(), ' ', '+');
-            cmd = cmd + m_asVals["archive_files"][i] + " " + str + "/" + std::to_string(Date().semester()) + "_" + "oop244" + "_" + dname + "_" + m_asVals["userid"] + "_" + "`whoami`" + "_" + m_asVals["archive_files"][i];
+            cmd = cmd + m_asVals["archive_files"][i] + " " + str + "/" + std::to_string(Date().semester()) + "_" + m_asVals["subject_code"][0] + "_" + dname + "_" + m_asVals["userid"] + "_" + "`whoami`" + "_" + m_asVals["archive_files"][i];
             cmd += " 2>/dev/null";
 
-            ch777 = ch777 + str + "/" + std::to_string(Date().semester()) + "_" + "oop244" + "_" + dname + "_" + m_asVals["userid"] + "_" + "`whoami`" + "_" + m_asVals["archive_files"][i];
+            ch777 = ch777 + str + "/" + std::to_string(Date().semester()) + "_" + m_asVals["subject_code"][0] + "_" + dname + "_" + m_asVals["userid"] + "_" + "`whoami`" + "_" + m_asVals["archive_files"][i];
             
             ret = (cmd.run() == 0) && (ch777.run() == 0);
          }
