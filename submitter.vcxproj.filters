@@ -108,10 +108,10 @@
     <None Include="working_dir\submitter_files\theProj.cfg">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="install">
+    <None Include="working_dir\submitter_files\accommodations.cfg">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="working_dir\submitter_files\accommodations.cfg">
+    <None Include="s_install">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>

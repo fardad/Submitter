@@ -20,7 +20,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v145</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
@@ -53,6 +53,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -108,9 +109,9 @@
     <Text Include="working_dir\submitter_files\message.txt" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="install" />
     <None Include="submitter.cfg" />
     <None Include="submitter_files\w1.cfg" />
+    <None Include="s_install" />
     <None Include="template.cfg" />
     <None Include="working_dir\submitter_files\accommodations.cfg" />
     <None Include="working_dir\submitter_files\theProj.cfg" />

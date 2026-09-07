@@ -1,0 +1,61 @@
+#!/bin/bash
+set -euo pipefail
+
+if ! command -v g++ >/dev/null 2>&1; then
+  echo "Error: g++ is not available." >&2
+  exit 1
+fi
+
+echo "This will give 711 permission to your home directory, are you sure?(Y/N)"
+read -r resp
+
+if [ "$resp" = Y ] || [ "$resp" = y ]; then
+  for file in \
+    Command.cpp Submitter.cpp SubVals.cpp Vals.cpp Date.cpp \
+    Line.cpp User.cpp Log.cpp main.cpp \
+    template.cfg accommodations.cfg
+  do
+    if [ ! -f "$file" ]; then
+      echo "Error: required file not found: $file" >&2
+      exit 1
+    fi
+  done
+
+  # Preserve the existing executable if compilation fails.
+  build_file=$(mktemp "$HOME/.submit-build.XXXXXX")
+  trap 'rm -f -- "$build_file"' EXIT
+
+  echo "please wait, compiling"
+  g++ -Wall -std=c++11 -o "$build_file" \
+    Command.cpp Submitter.cpp SubVals.cpp Vals.cpp Date.cpp \
+    Line.cpp User.cpp Log.cpp main.cpp
+
+  chmod 711 "$build_file"
+  mv -fT -- "$build_file" "$HOME/submit"
+
+  chmod 711 "$HOME"
+  chmod 711 "$HOME/submit"
+  echo "Permissions set"
+
+  if [ -d "$HOME/submitter_files" ]; then
+    echo "submitter_files already exist and will be used"
+  else
+    mkdir "$HOME/submitter_files"
+  fi
+
+  chmod 711 "$HOME/submitter_files"
+  cp template.cfg "$HOME/submitter_files/."
+
+  if [ -f "$HOME/submitter_files/accommodations.cfg" ]; then
+    echo "accommodations.cfg already exist; the new one will be copied to"
+    echo "  accommodationsTemplate.cfg"
+    cp accommodations.cfg \
+      "$HOME/submitter_files/accommodationsTemplate.cfg"
+  else
+    cp accommodations.cfg "$HOME/submitter_files/."
+  fi
+
+  echo "installation complete"
+else
+  echo "aborted"
+fi
