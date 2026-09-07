@@ -7,11 +7,13 @@
 #ifdef SUBMITTER_VERSION
 # undef SUBMITTER_VERSION
 #endif
-#define SUBMITTER_VERSION "0.99.11.2"
+// 2026-09-06 (CG): Addressed matrix changes affecting the submitter
+#define SUBMITTER_VERSION "0.99.11.3"
 #ifdef SUBMITTER_DATE
 # undef SUBMITTER_DATE
 #endif
-#define SUBMITTER_DATE "2024-08-19"
+// 2026-09-06 (CG): Addressed matrix changes affecting the submitter
+#define SUBMITTER_DATE "2026-09-09"
 //    program config file
 #ifdef SUB_CFG_FILE
 # undef SUB_CFG_FILE

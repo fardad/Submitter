@@ -93,7 +93,9 @@ namespace seneca{
     int days[] = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31, -1 };
     int mon = m_mon >= 1 && m_mon <= 12 ? m_mon : 13;
     mon--;
-    return days[mon] + int((mon == 1)*((m_year % 4 == 0) && (m_year % 100 != 0)) || (m_year % 400 == 0));
+    // 2026-09-06 (CG): Matrix compile error on arithmetic on bool expressions, so I had to change the following line to a ternary operator
+    //return days[mon] + int((mon == 1)*((m_year % 4 == 0) && (m_year % 100 != 0)) || (m_year % 400 == 0));
+    return ( (mon==1) && (((m_year % 4 == 0) && (m_year % 100 != 0)) || (m_year % 400 == 0)) ) ? 29 : days[mon];
   }
   int Date::semester() const {
      int syear = (m_year % 100 + 200)*10;

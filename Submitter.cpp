@@ -402,7 +402,9 @@ namespace seneca {
                   << "Compile result:" << col_end << endl;
                if((errcode = compile.run()) != 0) {
                   ++flog[m_configFileName];
-                  cout << col_red << "You have compilation errors. Please open \"" << m_asVals["err_file"][0] << "\" to veiw" << endl
+                  
+                  // 2026-09-06 (CG): Spelling error fixed, veiw -> view
+                  cout << col_red << "You have compilation errors. Please open \"" << m_asVals["err_file"][0] << "\" to view" << endl
                      << "and correct them." << endl << "Submission aborted! (code: " << errcode << ")" << col_end << endl;
                   m_ok2submit = false;
                   bad = 9;
@@ -411,7 +413,9 @@ namespace seneca {
                if(!bad && m_asVals["allow_warning"][0] != "yes") {
                   if(Command("grep warning " + m_asVals["err_file"][0] + ">/dev/null").run() == 0) {
                      ++flog[m_configFileName];
-                     cout << col_red << "You have compilation warnings. Please open \"" << m_asVals["err_file"][0] << "\" to veiw" << endl
+
+                     // 2026-09-06 (CG): Spelling error fixed, veiw -> view
+                     cout << col_red << "You have compilation warnings. Please open \"" << m_asVals["err_file"][0] << "\" to view" << endl
                         << "and correct them." << endl << "Submission aborted!" << col_end << endl;
                      bad = 10;
                      m_ok2submit = false;
@@ -455,7 +459,9 @@ namespace seneca {
             clrscr();
             Command("script " + m_asVals["output_file"][0] + " -c " + m_asVals["exe_name"][0]).run();
          } else {
-            Command(m_asVals["exe_name"] + " >" + m_asVals["output_file"]).run();
+            // 2026-09-06 (CG): Matrix now requires ./ to run the executable, so I added it here.
+            //Command(m_asVals["exe_name"] + " >" + m_asVals["output_file"]).run();
+            Command("./" + m_asVals["exe_name"] + " >" + m_asVals["output_file"][0]).run();
          }
       }
       return bad;
@@ -1021,7 +1027,9 @@ namespace seneca {
          if(m_skipNewlines) email += " lines";
       }
       email += " submission by `whoami`\" ";
-      email += " -Sreplyto=`whoami`@myseneca.ca ";
+      // 2026-09-06 (CG): Updates to matrix and newer version of mail command requires reply-to not replyto (add dash):
+      //email += " -Sreplyto=`whoami`@myseneca.ca ";
+      email += " -Sreply-to=`whoami`@myseneca.ca ";
       if(!Confirmation || cc_files_to_students) {
          for(int i = 0; i < m_asVals["submit_files"].size(); i++) {
             email += " -a " + m_asVals["submit_files"][i];
